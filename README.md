@@ -6,12 +6,8 @@ Firstly, I'm going to show *data type* and explain as best I can. You can reach 
 </br>
 [Data_Type](https://github.com/alperengokbak/PythonWithSelenium/blob/main/data_type.py)
 </br>
-<<<<<<< HEAD
-- This time, I've worked on **Conditional Statments** and **Loops**. Also, I tried to use ***args** and some methods of **list()**. You can reach it from the link below;
-=======
 
 This time, I've worked on **Conditional Statments** and **Loops**. Also, I tried to use ***args** and some methods of **list()**. You can reach it from the link below;
->>>>>>> cae58028fbb81c1ce6aac8f0974f73dbbb306867
 </br>
 [Student_Managment_Sytem](https://github.com/alperengokbak/PythonWithSelenium/blob/main/student_managment_system.py)
 </br>
