@@ -36,7 +36,8 @@ my_list.append("Country")
 my_list.append(("Miami", "California"))
 print(f"{my_list} is {type(my_list)}")
 
-my_tuple = ("Euro", "Dollar", 99)
+my_tuple = ("Euro", "Dollar", 99) # Tuple lists in Python are similar to a list but the difference is that the elements inside the tuple cannot be changed.
+                                # So we cannot add, delete or update the tuple list.
 print(f"{my_tuple} is {type(my_tuple)}")
 
 # Mapping Type
