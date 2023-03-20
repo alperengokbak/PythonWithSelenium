@@ -1,5 +1,7 @@
 # Python And Selenium
 
+## Python
+
 I would to like to share, what I did and will do during **Python With Selenium** camp.
 
 Firstly, I'm going to show *data type* and explain as best I can. You can reach the page from the link below;
@@ -21,7 +23,15 @@ I would like to explain **Inheritence** keyword with the basic example. I create
 
 Let's continue with Selenium. Firstly, I've made up some basic example. For example, entry [Google](https://www.google.com) and [Kodlama.io](https://www.kodlama.io). Also, I'm trying to use selenium to test on [Sauce](https://www.saucedemo.com). You can reach the details below both of their link;
 </br>
-- [BasicExample]()
+
+- [BasicExample](https://github.com/alperengokbak/PythonWithSelenium/blob/main/Selenium/seleniumExample.py)
 </br>
-- [TestSauce]()
+
+- [TestSauce](https://github.com/alperengokbak/PythonWithSelenium/blob/main/Selenium/testSauce.py)
+</br>
+
+Now, I would like to mention the some important point regarding *HTML*,*HTML Locators*,*Selenium Actions*. I explained all of them shortly. You can reach out below link;
+</br>
+
+- [ImportantPoints](https://github.com/alperengokbak/PythonWithSelenium/blob/main/Selenium/ImportantPoint.md)
 </br>
