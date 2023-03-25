@@ -39,13 +39,16 @@ class Test_Demo:
         valid_login.send_keys_to_element(self.password, password)
         valid_login.perform()
 
+    def save_screenshot(self, name):
+        self.driver.save_screenshot(self.folderPath + "/" + name)
+    
     def test_valid_login(self):
         self.create_action_chain("standard_user", "secret_sauce")
         self.wait_for_element_clickable((By.CLASS_NAME, "submit-button"))
         login_btn = self.driver.find_element(By.CLASS_NAME, "submit-button")
         login_btn.click()
         list_item = self.driver.find_elements(By.CLASS_NAME, "inventory_item")
-        self.driver.save_screenshot(self.folderPath + "/test-valid-login.png")
+        self.save_screenshot("test-valid-login.png")
         assert len(list_item) == 6
     
     def test_invalid_login(self):
@@ -55,7 +58,7 @@ class Test_Demo:
         login_btn.click()
         self.wait_for_element_visible((By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3"))
         error_message = self.driver.find_element(By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3")
-        self.driver.save_screenshot(self.folderPath + f"/test-invalid-login.png")
+        self.save_screenshot("test-invalid-login.png")
         assert error_message.text == "Epic sadface: Username and password do not match any user in this service"
     
     def test_login_empty(self):
@@ -64,7 +67,7 @@ class Test_Demo:
         login_btn = self.driver.find_element(By.CLASS_NAME, "submit-button")
         login_btn.click()
         error_message = self.driver.find_element(By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3/text()")
-        self.driver.save_screenshot(self.folderPath + "/test-login-empty.png")
+        self.save_screenshot("test-login-empty.png")
         assert error_message.text == "Epic sadface: Username is required"
 
     def test_login_empty_password(self):
@@ -74,6 +77,7 @@ class Test_Demo:
         login_button.click()
         self.wait_for_element_visible((By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3"))
         error_message = self.driver.find_element(By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3")
+        self.save_screenshot("test-login-empty-password.png")
         assert error_message.text == "Epic sadface: Password is required"
     
     def test_login_locked_out(self):
@@ -83,6 +87,7 @@ class Test_Demo:
         login_button.click()
         self.wait_for_element_visible((By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3"))
         error_message = self.driver.find_element(By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3")
+        self.save_screenshot("test-login-locked-out.png")
         assert error_message.text == "Epic sadface: Sorry, this user has been locked out."
 
     def test_login_empty_2(self):
@@ -93,4 +98,61 @@ class Test_Demo:
         self.wait_for_element_visible((By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3/button"))
         error_button = self.driver.find_element(By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3/button")
         error_button.click()
+        self.save_screenshot("test-login-empty-2.png")
         assert True
+
+    def test_add_product(self):
+        self.create_action_chain("standard_user", "secret_sauce")
+        self.wait_for_element_clickable((By.CLASS_NAME, "submit-button"))
+        login_btn = self.driver.find_element(By.CLASS_NAME, "submit-button")
+        login_btn.click()
+        self.wait_for_element_clickable((By.XPATH, "//*[@id='add-to-cart-sauce-labs-bike-light']"))
+        add_button = self.driver.find_element(By.XPATH, "//*[@id='add-to-cart-sauce-labs-bike-light']")
+        add_button.click()
+        self.wait_for_element_clickable((By.CLASS_NAME, "shopping_cart_link"))
+        cart_button = self.driver.find_element(By.CLASS_NAME, "shopping_cart_link")
+        cart_button.click()
+        self.wait_for_element_visible((By.CLASS_NAME, "shopping_cart_badge"))
+        test_cart = self.driver.find_element(By.CLASS_NAME, "shopping_cart_badge")
+        self.save_screenshot("test-add-product.png")
+        assert int(test_cart.text) > 0
+        
+    def test_remove_product(self):
+        self.create_action_chain("standard_user", "secret_sauce")
+        self.wait_for_element_clickable((By.CLASS_NAME, "submit-button"))
+        login_btn = self.driver.find_element(By.CLASS_NAME, "submit-button")
+        login_btn.click()
+        self.wait_for_element_visible((By.XPATH, "//*[@id='add-to-cart-sauce-labs-bike-light']"))
+        add_button = self.driver.find_element(By.XPATH, "//*[@id='add-to-cart-sauce-labs-bike-light']")
+        add_button.click()
+        self.wait_for_element_visible((By.CLASS_NAME, "shopping_cart_link"))
+        #add_button = self.driver.find_element(By.XPATH, "//*[@id='add-to-cart-sauce-labs-fleece-jacket']")
+        #add_button.click()
+        #sleep(1)
+        test_cart = self.driver.find_element(By.CLASS_NAME, "shopping_cart_link")
+        test_cart.click()
+        self.wait_for_element_clickable((By.ID, "remove-sauce-labs-bike-light"))
+        remove_button = self.driver.find_element(By.ID, "remove-sauce-labs-bike-light")
+        remove_button.click()
+        cart_item_count = self.driver.find_elements(By.CLASS_NAME, "cart_item")
+        try: 
+            for element in cart_item_count:
+                print(element)
+        except Exception as e:
+            print(e)
+        self.save_screenshot("test-remove-product.png")
+        assert cart_item_count == []
+
+    def test_control_price_list(self):
+        self.create_action_chain("standard_user", "secret_sauce")
+        self.wait_for_element_clickable((By.CLASS_NAME, "submit-button"))
+        login_btn = self.driver.find_element(By.CLASS_NAME, "submit-button")
+        login_btn.click()
+        my_list = list()
+        limit = self.driver.find_elements(By.CLASS_NAME, "inventory_item_price")
+        width = self.driver.execute_script("return arguments[0].offsetWidth", limit) # We can take the size of defined value with that function.
+        
+        for element in limit:
+            my_list.append(float(element.text[1 : width]))
+        self.save_screenshot("test-control-price-list.png")
+        assert my_list == [29.99, 9.99, 15.99, 49.99, 7.99, 15.99]
