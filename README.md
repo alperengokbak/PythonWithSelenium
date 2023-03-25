@@ -43,3 +43,9 @@ I've updated the [TestSauce](https://github.com/alperengokbak/PythonWithSelenium
 </br>
 
 - [TestSauce](https://github.com/alperengokbak/PythonWithSelenium/blob/main/Selenium/testSauce.py)
+</br>
+
+This time, I've created the **pytest** with the [TestSauce](https://github.com/alperengokbak/PythonWithSelenium/blob/main/Selenium/testSauce.py)'s functions. In this way, I created real test case with selenium.
+</br>
+
+- [test_sauce_with_pytest](https://github.com/alperengokbak/PythonWithSelenium/blob/main/Selenium/test_sauce.py)
