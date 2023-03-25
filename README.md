@@ -52,7 +52,7 @@ This time, I've created the **pytest** with the [TestSauce](https://github.com/a
 
 </br>
 
-I would like to share shortly pasage regarding **Pytest Decorators**. I'm trying to explain more clearily with the examples. You can reach defined page in the below link;
+I would like to share you shortly passage regarding **Pytest Decorators**. I'm trying to explain more clearily with the examples. You can reach defined page in the below link;
 </br>
 
 - [Pytest_Decorators](https://github.com/alperengokbak/PythonWithSelenium/blob/main/Selenium/pytestDecorators.md)
