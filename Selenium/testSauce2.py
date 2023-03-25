@@ -1,24 +1,32 @@
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.common.action_chains import ActionChains
 
-class TestSauce:
-    def __init__(self) -> None:
+class TestSauce: # We should put the "test" prefix. If we want to add these function and classes inside the pytest.
+    def __init__(self):
         self.driver = webdriver.Safari()
         self.driver.maximize_window()
         self.driver.get("https://www.saucedemo.com")
-        sleep(1) # We will restructure and put the different function instead of the sleep funciton in later times.
+        WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located((By.ID, "user-name")))
         self.user_name = self.driver.find_element(By.ID, "user-name")
+        WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located((By.ID, "password")))
         self.password = self.driver.find_element(By.ID, "password")
-        sleep(1)
+        self.valid_login = ActionChains(self.driver)
+        self.valid_login.send_keys_to_element(self.user_name, "standard_user")
+        self.valid_login.send_keys_to_element(self.password, "secret_sauce")
+        self.invalid_login = ActionChains(self.driver)
+        self.invalid_login.send_keys_to_element(self.user_name, "test")
+        self.invalid_login.send_keys_to_element(self.password, "test123")
 
     def test_invalid_login(self):
-        self.user_name.send_keys("test")
-        self.password.send_keys("test123")
-        sleep(1)
+        self.invalid_login.perform()
+        WebDriverWait(self.driver, 5).until(ec.element_to_be_clickable((By.CLASS_NAME, "submit-button")))
         login_btn = self.driver.find_element(By.CLASS_NAME, "submit-button")
         login_btn.click()
-        
+        WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located((By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3")))
         error_message = self.driver.find_element(By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3")
         test_result = error_message.text == "Epic sadface: Username and password do not match any user in this service"
         print(f"Test Result: {test_result}, {error_message.text}")
@@ -69,12 +77,10 @@ class TestSauce:
         sleep(2)
 
     def test_valid_login(self):
-        self.user_name.send_keys("standard_user")
-        self.password.send_keys("secret_sauce")
-        sleep(1)
+        self.valid_login.perform()
+        WebDriverWait(self.driver, 5).until(ec.element_to_be_clickable((By.CLASS_NAME, "submit-button")))
         login_btn = self.driver.find_element(By.CLASS_NAME, "submit-button")
         login_btn.click()
-        sleep(2)
         list_item = self.driver.find_elements(By.CLASS_NAME, "inventory_item")
         print(f"Number of Item: {len(list_item)}")
     
@@ -149,7 +155,7 @@ test_Class = TestSauce()
 #test_Class.test_login_empty_password()
 #test_Class.test_login_locked_out()
 #test_Class.test_login_empty_2()
-#test_Class.test_valid_login()
+test_Class.test_valid_login()
 #test_Class.test_add_product()
-test_Class.test_remove_product()
+#test_Class.test_remove_product()
 #test_Class.test_take_price_list()

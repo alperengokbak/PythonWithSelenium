@@ -3,3 +3,6 @@
 .jpeg
 Class_Work
 __pycache__
+.vscode
+.pytest_cache
+2023-0*
