@@ -6,6 +6,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from pathlib import Path
 from datetime import date
 import pytest
+import openpyxl
+from constants import test_sauceConstants as tsc
 
 # 3A --> Act, Arrange, Assert
 class Test_Demo:
@@ -13,20 +15,21 @@ class Test_Demo:
     def setup_method(self): 
         self.driver = webdriver.Safari()
         self.driver.maximize_window()
-        self.driver.get("https://www.saucedemo.com")
+        self.driver.get(tsc.url)
+        self.find_user_name_and_password()
+        # Take the date of today and check is there any file if there is not, create.
+        self.folderPath = str(date.today())
+        Path(self.folderPath).mkdir(exist_ok=True)
+    # Will call after each test.
+    def teardown_method(self):
+        self.driver.quit()
+    
+    def find_user_name_and_password(self):
         self.wait_for_element_visible((By.ID, "user-name"))
         self.user_name = self.driver.find_element(By.ID, "user-name")
         self.wait_for_element_visible((By.ID, "password"))
         self.password = self.driver.find_element(By.ID, "password")
 
-        # Take the date of today and check is there any file if there is not, create.
-        self.folderPath = str(date.today())
-        Path(self.folderPath).mkdir(exist_ok=True)
-
-    # Will call after each test.
-    def teardown_method(self):
-        self.driver.quit()
-    
     def wait_for_element_visible(self, locator, timeout = 5):
         WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(locator))
     
@@ -38,6 +41,20 @@ class Test_Demo:
         valid_login.send_keys_to_element(self.user_name, username)
         valid_login.send_keys_to_element(self.password, password)
         valid_login.perform()
+
+    def get_data():
+        excel_file = openpyxl.load_workbook("data/invalid_login.xls")
+        selected_sheet = excel_file["invalid_login"]
+
+        data = list()
+        total_rows = selected_sheet.max_row
+        for var in range(2, total_rows + 1):
+            username = selected_sheet.cell(var, 1).value
+            password = selected_sheet.cell(var, 2).value
+            tuple_data = (username, password)
+            data.append(tuple_data)
+
+        return data
 
     def save_screenshot(self, name):
         self.driver.save_screenshot(self.folderPath + "/" + name)

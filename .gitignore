@@ -6,3 +6,5 @@ __pycache__
 .vscode
 .pytest_cache
 2023-0*
+testSauce2.py
+test_sauce.side
